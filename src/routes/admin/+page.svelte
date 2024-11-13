@@ -11,6 +11,7 @@
   } from "firebase/auth";
   import { doc, getDoc } from "firebase/firestore";
   import { isSuperAdmin, isAuthenticated, currUser } from "$lib/stores/auth";
+  import GeriBildirimYonetimi from "$lib/components/GeriBildirimYonetimi.svelte";
 
   let email = "";
   let password = "";
@@ -115,6 +116,8 @@
         Sadece süper admin kullanıcılar yeni kullanıcı ekleyebilir.
       </p>
     {/if}
+
+    <GeriBildirimYonetimi />
   </div>
 {:else}
   <div class="flex items-center justify-center h-screen bg-gray-100">

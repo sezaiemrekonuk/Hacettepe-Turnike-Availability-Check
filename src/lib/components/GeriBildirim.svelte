@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { db } from "$lib/firebase";
   import { collection, addDoc, Timestamp } from "firebase/firestore";
+  import { toast } from "@zerodevx/svelte-toast";
 
   let feedback = "";
   let canSubmitFeedback = true;
@@ -31,7 +32,14 @@
     localStorage.setItem("lastFeedbackDate", new Date().toISOString());
     feedback = "";
     canSubmitFeedback = false;
-    alert("Geri bildiriminiz için teşekkürler!");
+
+    toast.push("Geri bildiriminiz başarıyla gönderildi.", {
+      theme: {
+        "--toastBackground": "#48BB78",
+        "--toastColor": "#fff",
+        "--toastBarBackground": "#2F855A",
+      },
+    });
   };
 </script>
 
