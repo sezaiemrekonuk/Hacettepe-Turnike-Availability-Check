@@ -4,15 +4,14 @@
   import { onDestroy } from "svelte";
 
   let loadingMessages = [
-    "İlk turnike bilgileri alınıyor...",
-    "İkinci turnike bilgileri alınıyor...",
-    "Üçüncü turnike bilgileri alınıyor...",
+    "Turnike verileri alınıyor...",
     "Son güncellenme tarihleri alınıyor...",
+    "Arif abiye selam veriliyor...",
   ];
   let currentIndex = 0;
   let allMessagesShown = false;
 
-  const loadingTime = 1500;
+  const loadingTime = 2000;
   const changeMessage = () => {
     if (currentIndex < loadingMessages.length - 1) {
       currentIndex++;
@@ -42,17 +41,9 @@
 
   <!-- Loading Overlay -->
   <div class="loading-overlay {allMessagesShown ? 'hidden' : ''}">
-    <div class="text-center">
-      <header class="mb-12 flex justify-center items-center flex-col">
-        <h2>Beytepe Erkek Öğrenci Yurdu Turnike Bilgi Sistemi</h2>
-        <small class="text-gray-500">
-          Sırf siz kartınızı yanınıza ne zaman almanız gerektiğini bilin diye :)
-        </small>
-      </header>
-      <div
-        class="spinner border-4 border-blue-600 border-t-transparent rounded-full w-16 h-16 animate-spin mx-auto mb-6"
-      ></div>
-      <p class="text-lg text-gray-700 font-medium">
+    <div class="flex flex-col items-center justify-center">
+      <div class="pulse-circle mb-4"></div>
+      <p class="text-lg text-gray-700 font-bold font-sans">
         {loadingMessages[currentIndex]}
       </p>
     </div>
@@ -66,30 +57,36 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, #ebf8ff, #cfe3f8);
+    background: rgb(255, 255, 255);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    transition: opacity 0.4s ease-in-out;
   }
 
   .hidden {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
   }
 
-  .spinner {
-    animation: spin 1s linear infinite;
+  .pulse-circle {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    width: 4rem;
-    height: 4rem;
+    background: #4f46e5;
+    animation: pulse 1.5s infinite ease-in-out;
   }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
     }
-    to {
-      transform: rotate(360deg);
+    50% {
+      transform: scale(1.2);
+      opacity: 0.7;
     }
   }
 

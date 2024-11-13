@@ -10,12 +10,11 @@
     onAuthStateChanged,
   } from "firebase/auth";
   import { doc, getDoc } from "firebase/firestore";
+  import { isSuperAdmin, isAuthenticated, currUser } from "$lib/stores/auth";
 
   let email = "";
   let password = "";
   let errorMessage = "";
-  const isAuthenticated = writable(false);
-  const isSuperAdmin = writable(false); // Yeni kullanıcı ekleme yetkisini kontrol etmek için
 
   // Kullanıcının oturum durumunu izlemek
   onAuthStateChanged(auth, async (user) => {
@@ -57,6 +56,8 @@
         throw new Error("Lütfen e-posta ve şifre girin.");
       }
       await signInWithEmailAndPassword(auth, email, password);
+      $currUser.email = email;
+      $currUser.password = password;
       toast.push("Başarıyla giriş yapıldı!", {
         theme: {
           "--toastBackground": "#48BB78",

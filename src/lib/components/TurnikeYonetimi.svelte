@@ -7,6 +7,7 @@
     doc,
     updateDoc,
     addDoc,
+    deleteDoc,
   } from "firebase/firestore";
   import { toast } from "@zerodevx/svelte-toast";
 
@@ -130,6 +131,31 @@
       });
     }
   };
+
+  const handleDeleteTurnike = async (id) => {
+    if (confirm("Bu turnikeyi silmek istediğinize emin misiniz?")) {
+      try {
+        const turnikeDoc = doc(db, "turnikeler", id);
+        await deleteDoc(turnikeDoc);
+        toast.push("Turnike başarıyla silindi!", {
+          theme: {
+            "--toastBackground": "#48BB78",
+            "--toastColor": "#fff",
+            "--toastBarBackground": "#2F855A",
+          },
+        });
+        await fetchTurnikeBilgileri(); // Listeyi güncelle
+      } catch (error) {
+        toast.push("Turnike silinirken bir hata oluştu: " + error.message, {
+          theme: {
+            "--toastBackground": "#F56565",
+            "--toastColor": "#fff",
+            "--toastBarBackground": "#C53030",
+          },
+        });
+      }
+    }
+  };
 </script>
 
 <div class="p-4 bg-white rounded shadow-lg max-w-3xl mx-auto">
@@ -213,6 +239,12 @@
           class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-500"
         >
           Güncelle
+        </button>
+        <button
+          on:click={() => handleDeleteTurnike(selectedTurnike.id)}
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-500 mt-2"
+        >
+          Sil
         </button>
       {/if}
     {:else}
